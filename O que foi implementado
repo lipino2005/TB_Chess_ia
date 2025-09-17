@@ -1,0 +1,104 @@
+Modificações realizadas
+1. Novo seletor de nível da IA
+
+Foi adicionada uma nova variável na classe ChessGUI:
+
+private JComboBox<String> levelCombo;
+
+
+No menu do jogo (buildMenuBar), criei um novo item "Nível IA" com quatro opções:
+
+1 - Aleatório
+
+2 - Heurística
+
+3 - Minimax raso
+
+4 - Minimax alfa-beta
+
+Isso permite escolher o nível de dificuldade da IA durante a execução.
+
+2. Níveis de IA implementados
+Nível 1 — Aleatório
+
+Escolhe um lance válido qualquer, totalmente ao acaso.
+
+Mais fraco possível, ideal para iniciantes.
+
+return allMoves.get(rnd.nextInt(allMoves.size()));
+
+Nível 2 — Heurística simples (comportamento original melhorado)
+
+Avalia jogadas baseando-se em:
+
+Captura de peças adversárias (maior valor → melhor).
+
+Bônus por ocupar casas centrais.
+
+Pequeno fator de aleatoriedade.
+
+Profundidade superficial (não simula vários lances).
+
+É rápido e “esperto” o suficiente para jogar em nível casual.
+
+Nível 3 — Minimax raso
+
+Implementa o algoritmo Minimax (sem poda alfa-beta).
+
+Profundidade controlada pelo spinner "Profundidade IA" já existente.
+
+Analisa alguns lances à frente (ex.: 2–3 lances) para tomar decisões melhores.
+
+Dificuldade intermediária — já começa a planejar jogadas, não apenas reagir.
+
+Nível 4 — Minimax com poda alfa-beta
+
+Implementa Minimax com poda alfa-beta.
+
+Busca mais profunda (até depthSpinner + 1 níveis).
+
+Muito mais eficiente, elimina ramos ruins da árvore de decisão.
+
+Jogadas mais “inteligentes”, pois consegue prever contra-ataques.
+
+Dificuldade alta — a IA realmente joga de forma competitiva, limitada apenas pela profundidade escolhida.
+
+3. Funções auxiliares criadas
+
+Foram adicionadas novas funções em ChessGUI.java:
+
+evaluateGame(Game g, boolean aiIsWhite)
+Avalia o tabuleiro pelo material (valores das peças) + bônus de centralização.
+
+minimaxRoot(...)
+Executa a raiz do algoritmo minimax, chamando minimaxPlain ou minimax.
+
+minimaxPlain(...)
+Implementação básica do minimax sem poda.
+
+minimax(...)
+Implementação do minimax com poda alfa-beta.
+
+collectAllLegalMovesForSide(...)
+Recolhe todos os lances legais para um lado específico do tabuleiro.
+
+4. Alteração no SwingWorker (IA assíncrona)
+
+O método doInBackground agora seleciona a estratégia de acordo com o nível escolhido:
+
+int selectedLevel = levelCombo.getSelectedIndex() + 1;
+
+if (selectedLevel == 1) { ... }       // Aleatório
+else if (selectedLevel == 2) { ... }  // Heurística
+else if (selectedLevel == 3) { ... }  // Minimax raso
+else { ... }                          // Minimax com poda
+
+Resultado final
+
+Agora o jogo possui 4 níveis de dificuldade configuráveis no menu.
+
+A IA pode variar desde totalmente aleatória até competitiva com previsão de jogadas.
+
+O controle de profundidade (depthSpinner) continua funcionando para os níveis 3 e 4.
+
+Todas as alterações estão concentradas em ChessGUI.java (não foi necessário criar novas classes).
